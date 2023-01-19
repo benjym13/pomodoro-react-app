@@ -8,7 +8,6 @@ function App() {
 
   return (
     <div className="App">
-      <SettingsCounter></SettingsCounter>
       <Counter></Counter>
     </div>
   )

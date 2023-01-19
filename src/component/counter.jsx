@@ -1,5 +1,6 @@
-import { Button, ButtonGroup } from '@mui/material';
+import { Button, ButtonGroup, Drawer } from '@mui/material';
 import React, { useState, useEffect } from 'react'
+import SettingsCounter from './SettingsCounter';
 import Timer from './Timer';
 
 const Counter = () => {
@@ -10,11 +11,12 @@ const Counter = () => {
     const [minutes, setMinutes] = useState(initialTiming) */
     const initialTiming =  {
         minutes:0,
-        seconds:6
+        seconds:4
     };
     const [time, setTime] = useState(initialTiming)
     const [paused, setPaused] = useState(false);
     const [rest, setRest] = useState(false);
+    const [formTime, setFormTime] = useState(null)
 
     useEffect(() => {
         let startTimer;
@@ -31,6 +33,7 @@ const Counter = () => {
                     });
                 }
                 resting()
+                console.log(time);
             }, 1000);
             console.log(paused);
         }
@@ -43,14 +46,21 @@ const Counter = () => {
     function startStop () {
         setPaused(!paused);
     }
-    function restartTiming() {
-        alert(`quedan ${time.minutes > 10 ? time.minutes : '0' + time.minutes}mins ${time.seconds > 10 ? time.seconds : '0' + time.seconds}sg, ¿seguro que quieres reiniciar el temporizador?`);
+    function restartTiming(time) {
+        alert(`quedan ${time.minutes > 10 ? time.minutes : '0' + time.minutes}mins ${time.seconds > 10 ? time.seconds : '0' + time.seconds}sg, ¿seguro que quieres reiniciar el Pomodoro?`);
         setPaused(false);
-        setTime({
-            minutes:25,
-            seconds:0
-        })
-        setRest(!rest);
+        if(formTime == null) {
+            setTime({
+                minutes:25,
+                seconds:0
+            })
+        } else {
+            setTime({
+                minutes: formTime.minutes,
+                seconds: formTime.seconds
+            });
+        }
+        setRest(false);
     }
     
     function resting() {
@@ -64,14 +74,35 @@ const Counter = () => {
         }
     }
 
+    function setCustomTime(pomodoroMin) {
+        setTime({
+            minutes: pomodoroMin.minutes,
+            seconds: pomodoroMin.seconds
+        })
+        setRest(false)
+        setFormTime(pomodoroMin);
+    }
+    // set Default short time
+    function setShortBreak () {
+        setTime({minutes:5,seconds:0});
+        setRest(true);
+    }
+    // set Default long time
+    function setLongBreak () {
+        setTime({minutes:15,seconds:0});
+        setRest(true);
+    }
     
     return (
         <div>
             <div className="c-counter">
+                <SettingsCounter 
+                    time={setCustomTime}
+                ></SettingsCounter>
                 <ButtonGroup variant="contained"  size="small">
-                    <Button onClick={restartTiming}>POMODORO</Button >
-                    <Button onClick={()=>{setTime({minutes:5,seconds:0})}}>SHORT BREAK</Button >
-                    <Button onClick={()=>{setTime({minutes:15,seconds:0})}}>LONG BREAK</Button >
+                    <Button onClick={() => {restartTiming(time)}}>POMODORO</Button >
+                    <Button onClick={setShortBreak}>SHORT BREAK</Button >
+                    <Button onClick={setLongBreak}>LONG BREAK</Button >
                 </ButtonGroup>
                 {rest ? (<h2>TIME TO REST</h2>) : (<h2>TIME TO FOCUS</h2>)}
                 <Timer 
