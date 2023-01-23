@@ -10,9 +10,11 @@ const Counter = () => {
     const [seconds, setSeconds] = useState(0)
     const [minutes, setMinutes] = useState(initialTiming) */
     const initialTiming =  {
-        minutes:0,
-        seconds:4
+        minutes:25,
+        seconds:0
     };
+
+    // STATES
     const [time, setTime] = useState(initialTiming)
     const [paused, setPaused] = useState(false);
     const [rest, setRest] = useState(false);
@@ -54,6 +56,11 @@ const Counter = () => {
                 minutes:25,
                 seconds:0
             })
+        } else if(formTime.minutes == ''){
+            setTime({
+                minutes:25,
+                seconds:0
+            })
         } else {
             setTime({
                 minutes: formTime.minutes,
@@ -86,11 +93,25 @@ const Counter = () => {
     function setShortBreak () {
         setTime({minutes:5,seconds:0});
         setRest(true);
+        setPaused(false);
+        if (formTime !== null ) {
+            setTime({
+                minutes: formTime.short,
+                seconds:0
+            });
+        }
     }
     // set Default long time
     function setLongBreak () {
         setTime({minutes:15,seconds:0});
         setRest(true);
+        setPaused(false);
+        if (formTime !== null ) {
+            setTime({
+                minutes: formTime.long,
+                seconds:0
+            });
+        }
     }
     
     return (
@@ -99,22 +120,18 @@ const Counter = () => {
                 <SettingsCounter 
                     time={setCustomTime}
                 ></SettingsCounter>
-                <ButtonGroup variant="contained"  size="small">
+                <ButtonGroup variant="contained"  size="small" style={{gap: '4px'}}>
                     <Button onClick={() => {restartTiming(time)}}>POMODORO</Button >
                     <Button onClick={setShortBreak}>SHORT BREAK</Button >
                     <Button onClick={setLongBreak}>LONG BREAK</Button >
                 </ButtonGroup>
-                {rest ? (<h2>TIME TO REST</h2>) : (<h2>TIME TO FOCUS</h2>)}
+                {rest ? (<h2>TIME FOR A BREAK</h2>) : (<h2>TIME TO FOCUS</h2>)}
                 <Timer 
                     seconds={time.seconds}
                     minutes={time.minutes}
                 ></Timer>
                 {/* El button ejecuta una function que cambia de true/false el estado */}
                 <Button variant='contained' onClick={startStop}>{paused == false ? 'START' : 'STOP'}</Button  >
-                {/* {!rest ?
-                    (<button className={`${!paused ? 'available' : 'disable'}`} onClick={restartTiming}>RESTART</button>) : ''
-                } */}
-                
             </div>
         </div>
     )

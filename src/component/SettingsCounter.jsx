@@ -5,14 +5,15 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import FormikSettings from './forms/FormikSettings';
 
 const SettingsCounter = ({time}) => {
+
+    const [open, setOpen] = useState(false)
     
     function getCustomTime(newTime) {
         time(newTime)
-        console.log('desde settings',newTime)
-        setOpen
+        console.log('desde settings', newTime);
+        setOpen(false);
     }
 
-    const [open, setOpen] = useState(false)
     return (
         <div>
             <div className="counter-settings">
