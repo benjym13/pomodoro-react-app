@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-
+import './../scss/main.scss';
 const Timer = ({seconds, minutes}) => {
 
     
@@ -16,7 +16,7 @@ const Timer = ({seconds, minutes}) => {
     }
 
     return (
-        <div><h1>{minutesPrinted()}:{seconds < 10 ? '0'+seconds : seconds }</h1></div>
+        <div><h1 className='timer'>{minutesPrinted()}:{seconds < 10 ? '0'+seconds : seconds }</h1></div>
     )
 }
 

@@ -115,8 +115,8 @@ const Counter = () => {
     }
     
     return (
-        <div>
-            <div className="c-counter">
+        <div className="c-counter">
+            <div className="c-counter--container">
                 <SettingsCounter 
                     time={setCustomTime}
                 ></SettingsCounter>
